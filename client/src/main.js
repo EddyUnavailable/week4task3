@@ -5,11 +5,8 @@ console.log(supabase)
 
 console.log('Hello')
 async function fetchData() {
-    // await says 'no i really want to wait for our response 'headers' to come back
-    const unicorns = await fetch(`https://jsonplaceholder.typicode.com/posts`)
-    // step 2 -> we're not done 
+    const unicorns = await fetch(`https://jsonplaceholder.typicode.com/posts`) 
     const flowers = await unicorns.json()
-    // generateUI(flowers)
     generateUI(flowers)
 }
 fetchData()
@@ -50,3 +47,23 @@ function generateUI(dataToRender) {
            contentDiv.appendChild(containerElem)
     })
 }
+
+// const form = document.getElementById('form');
+
+// form.addEventListener('submit', function(e) {
+//     // Prevent default behavior:
+//     e.preventDefault();
+//     // Create new FormData object:
+//     const formData = new FormData(form);
+//     // Convert formData object to URL-encoded string:
+//     const payload = new URLSearchParams(formData);
+//     // Post the payload using Fetch:
+//     fetch('https://httpbin.org/post', {
+//     method: 'POST',
+//     body: payload,
+//     })
+//     .then(res => res.json())
+//     .then(data => console.log(data))
+//     .catch(err => console.log(er))
+// })
+

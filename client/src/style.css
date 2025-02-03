@@ -1,24 +1,26 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: rgb(12, 51, 17);
+  /* background-color: rgb(12, 51, 17);
   background-color: linear-gradient(
     green 20%,
     rgb(7, 116, 47) 40%,
     rgb(28, 10, 110) 80%,
     rgba(33, 20, 155, 100%)
       
-    );
+    ); */
 }
 
 .shell {
   width: 100vw;
   height: 100vh;
+  display: grid;
+  grid-row: 1fr 9fr;
   margin: 0px;
   padding: 0%;
-  /* position: absolute; */
   left: 0%;
   background-color: blue;
+  overflow: hidden;
 }
 .scroll {
     position: fixed;
@@ -30,7 +32,7 @@ body {
     height: 75px;
     margin-top: 5rem;
     overflow: hidden;
-    background-color: rgb(12, 51, 17);
+    background-color: blue;
     mask-image: linear-gradient(
       to right,
     rgba(0,0,0,0),
@@ -97,74 +99,95 @@ negative delay changes where each cell starts*/
   animation-delay: calc(30s / 8 * (8 - 8) * -1);
 }
 
-.box1 {
+.title1 {
+  justify-self: center;
+  
+}
+.outtabox {
   height: 100vh;
   width: 100vw;
   background: beige;
   display: grid;
-  margin: 20px;
-  /* place-items: center; */
-}
-
-
-.box2 {
-  display: grid;
-  gap: 24px;
   grid-template-columns: 1fr 1fr 1fr;
-  margin: 0px;
-  padding-inline: 16px;
-  max-width: 100vw;
-  max-height: 70vh;
-}
-
-.box3 {
-  display: flex;
-  justify-content: center;
-  background: rgb(1, 8, 21);
+  margin: 10px;
   padding: 10px;
-  width: 30vw;
-  height: 80vh;
-  text-align: center;
-  color: yellow;
-  font-size: 20px;
-  font-weight: bold;
+  box-sizing: border-box;
+  width: 100%;
+  border: solid #5B6DCD 5px;
+  padding: 5px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-@media (max-width: 1024px) {
+
+.boxes3 {
+  background-color: aqua;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin: 20px;
+  padding-inline: 10px;
+  width: 500px;
+  height: 500px;
+  font-size: medium;
   
 }
+
+
+
+
+@media (max-width: 1024px) {
+  .boxes3 {
+    width: 300px;
+    height: 500px;
+  }
+}
 @media (max-width: 768px) {
-  .box2 {
+  .outtabox {
     font-size: 12px;
     grid-template-columns: 1fr;
   }
-  .box3 {
-    width: 80vw;
-  }
-}
-@media (max-width: 320px) {
-  .box2 {
+  .boxes3 {
+    justify-self: center;
+    width: 500px;
+    height: 500px;
+    }
+}  
+@media (max-width: 500px) {
+  .outtabox {
     font-size: 12px;
     grid-template-columns: 1fr;
   }
-}
+  .boxes3 {
+    justify-self: center;
+    width: 300px;
+    height: 500px;
+    }
+}  
 /* @media only screen and (orientation: landscape) {
   body {
     background-color: lightblue;
   }
 } */
 
-.guestB {
-  display: grid;
-  grid-area: messages_flow;
-  grid-template-rows: 1fr 1fr 1fr 8fr 1fr;
-  padding-inline: 15px;
+.info1 {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-.pcomments {
-  width: 100%;
-  overflow-x: scroll;
-  overflow: hidden;
+.guestB1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pcomments1 {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
   white-space: pre-wrap;
 }
 /* Desktop Width 1920
