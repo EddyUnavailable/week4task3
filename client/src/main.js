@@ -3,84 +3,57 @@ console.log(supabase)
 
 
 
-// console.log('Hello')
-// async function fetchData() {
-//     const unicorns = await fetch(`https://jsonplaceholder.typicode.com/posts`) 
-//     const flowers = await unicorns.json()
-//     generateUI(flowers)
-// }
-// fetchData()
-// function generateUI(dataToRender) {
-  
-//     for (let i = 0; i < dataToRender.length; i++) {
-//         // 1. create the element(s) (the ptag) we want
-//         const containerElem = document.createElement('div')
-//         const titleElem = document.createElement('h2')
-//         const pElem = document.createElement('p')
-//         // 2. Put the info we need in them.
-//         titleElem.innerText = dataToRender[i].title
-//         pElem.innerText = dataToRender[i].body
-//         containerElem.setAttribute('class', 'post')
-//         // 3. append the title and ptag to the container we made
-//         containerElem.appendChild(titleElem)
-//         containerElem.appendChild(pElem)
-//         const contentDiv = document.getElementById('content')
-//         contentDiv.appendChild(containerElem)
-//     }
-//     dataToRender.forEach((post) => {
-//            // 1. create the element(s) (the ptag) we want
-//            const containerElem = document.createElement('div')
-//            const titleElem = document.createElement('h2')
-//            const pElem = document.createElement('p')
-   
-//            // 2. Put the info we need in them.
-//            titleElem.innerText = post.title
-//            pElem.innerText = post.body
-   
-//            containerElem.setAttribute('class', 'coolerPost')
-   
-//            // 3. append the title and ptag to the container we made
-//            containerElem.appendChild(titleElem)
-//            containerElem.appendChild(pElem)
-   
-//            const contentDiv = document.getElementById('content')
-//            contentDiv.appendChild(containerElem)
-//     })
-// }
+const app = document.getElementById('app')
 
-// const form = document.getElementById('form');
+async function fetchData() {
+  const res = await fetch(`http://localhost:5173/jokes`)
+  const jokes = await res.json()
 
-// form.addEventListener('submit', function(e) {
-//     // Prevent default behavior:
-//     e.preventDefault();
-//     // Create new FormData object:
-//     const formData = new FormData(form);
-//     // Convert formData object to URL-encoded string:
-//     const payload = new URLSearchParams(formData);
-//     // Post the payload using Fetch:
-//     fetch('https://httpbin.org/post', {
-//     method: 'POST',
-//     body: payload,
-//     })
-//     .then(res => res.json())
-//     .then(data => console.log(data))
-//     .catch(err => console.log(er))
-// })
+  displayJokes(jokes)
+}
+
+function displayJokes(param) {
+  // clear the div before we add things 
+  app.innerHTML = ''
+  param.forEach(singleJoke => {
+    const h3 = document.createElement('h3')
+    const pTag = document.createElement('p')
+    const div = document.createElement('div')
+    const deleteButton = document.createElement('button')
+
+    h3.innerText = singleJoke.joke
+    pTag.innerText = singleJoke.punchline
+    deleteButton.innerText = 'X'
+
+    deleteButton.addEventListener('click', function() {
+      handleDelete(singleJoke.id)
+    })
+
+    div.appendChild(deleteButton)
+    div.appendChild(h3)
+    div.appendChild(pTag)
+
+    app.appendChild(div)
+  })
+}
+
+fetchData()
+
+async function handleDelete(id) {
+  const res = await fetch(`http://localhost:5173/jokes/${id}`, {
+    method: 'DELETE'
+  })
+  if (res.ok) {
+    fetchData()
+  }
+}
 
 const submitBtn = document.querySelector('.submit__btn')
 const userName = document.querySelector('#user')
 const comment = document.querySelector('#comment')
-const likeIcon = document.querySelector('.heart__icon')
-const count = document.querySelector('.count')
 const commentsCont = document.querySelector('.comments__container')
 
-likeIcon.addEventListener('click', likeVideo)
 submitBtn.addEventListener('click', submitFeedback)
-
-
-feedbackArr = []
-let positiveFeedback = false
-let likesCount = 0
 
 function submitFeedback(e){
     // get user name
@@ -112,24 +85,7 @@ function submitFeedback(e){
     e.preventDefault()
 }
 
-function likeVideo(){
-    likeIcon.classList.toggle('liked')
 
-    if(likeIcon.classList.contains('liked')){
-        likeIcon.innerHTML = `<i class="fas fa-heart"></i>`
-        // set feedback to liked
-        positiveFeedback = true
-    } else {
-        likeIcon.innerHTML = `<i class="far fa-heart"></i>`
-        // set feedback to not liked
-        positiveFeedback = false
-    }
-}
-
-function addLikes(){
-    likesCount++
-    count.innerHTML = likesCount
-}
 
 function resetForm(){
     userName.value = ''

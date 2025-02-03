@@ -31,19 +31,16 @@
         </div>
         <div id=form1 class="boxes3 guestB1">
           <h1 class="title1">Guest Book</h1>
-          <input name="username" type="text">
-          <textarea type="text">Post you comment here</textarea>
-          <button type="submit">Submit</button>
+          <input type="text" name="user" id="user" placeholder="Your user name">
+          <input type="text" class="inputM" name="comment" id="comment" placeholder="Add a short comment here">
+          <button type="submit" class="submit__btn">
+            Submit
+          </button>
         </div>
-        <!-- <form id="form">
-          <input name="username" type="text">
-          <input name="password" type="text" min="10" max="100">
-          <button type="submit">Submit</button>
-        </form> -->
         <div class="boxes3 pcomments1">
           <form class="box3 pcomments2">
             <h1 class="title1">Past comments</h1>
-            <p id="contentT" class="pcomments"></p>
+            <p id="content" class="pcomments inputM"></p>
             <div></div>
           </form>
         </div>
