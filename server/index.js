@@ -22,41 +22,34 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
 // a pool is a way for our express app to connect to our database
 // I'll give it a connnection string so that I can connect to *my* database
 const db = new pg.Pool({
     connectionString: process.env.DB_CONN
 })
 
-fetch('https://uselessfacts.jsph.pl/random.json') // Replace with your API URL
+// fetch('https://uselessfacts.jsph.pl/random.json') // Replace with your API URL
 
-    .then(response => {
+//     .then(response => {
 
-        if (!response.ok) {
+//         if (!response.ok) {
 
-            throw new Error('Network response was not ok');
+//             throw new Error('Network response was not ok');
 
-        }
+//         }
 
-        return response.json(); 
+//         return response.json(); 
 
-    })
+//     })
 
-    .then(data => {
+//     .then(data => {
 
-        console.log(data); // Now you have the fetched user data as a JavaScript object
+//         console.log(data); // Now you have the fetched user data as a JavaScript object
 
-    })
+//     })
 
-    .catch(error => {
+//     .catch(error => {
 
-        console.error('Error fetching data:', error);
+//         console.error('Error fetching data:', error);
 
-    });
+//     });
