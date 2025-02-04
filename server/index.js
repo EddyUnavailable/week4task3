@@ -4,18 +4,31 @@ import pg from "pg"
 import dotenv from "dotenv"
 const port = process.env.port || 8080;
 
-// instastiate my app 
+const express = require('express')
 const app = express()
-
-// do my 'use'
 // allow incomming requests from other people 
 app.use(cors())
 // read incomming json
 app.use(express.json())
-
 // goes and looks for a .env file and pulls those environment variables into our node process
 dotenv.config()
 
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
 // a pool is a way for our express app to connect to our database
 // I'll give it a connnection string so that I can connect to *my* database
 const db = new pg.Pool({
