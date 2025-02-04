@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import pg from "pg"
 import dotenv from "dotenv"
+const port = process.env.port || 5000;
 
 // instastiate my app 
 const app = express()
