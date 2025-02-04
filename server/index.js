@@ -1,59 +1,83 @@
 import express from "express"
-import { hostname } from "os";
+import cors from "cors"
+import pg from "pg"
+import dotenv from "dotenv"
 
-const http = require(`http`);
+// instastiate my app 
+const app = express()
+
+// do my 'use'
+// allow incomming requests from other people 
+app.use(cors())
+// read incomming json
+app.use(express.json())
+
+// goes and looks for a .env file and pulls those environment variables into our node process
+dotenv.config()
+
+// a pool is a way for our express app to connect to our database
+// I'll give it a connnection string so that I can connect to *my* database
+const db = new pg.Pool({
+    connectionString: process.env.DB_CONN
+})
 
 
-const port = process.env.port || 5000;
-const server = http.createServer(app);
-
-server.listen(port, hostname () => {
-  console.log(`started on port ${port}`);
-});
 
 
 
-// const app = document.getElementById('app')
+app.get('/', (req, res) => res.json(`HellooOO (ﾉ◕ヮ◕)ﾉ*:・ﾟ✧`))
 
-// async function fetchData() {
-//   const res = await fetch(`http://localhost:5173/jokes`)
-//   const jokes = await res.json()
+app.get('/jokes', async (req, res) => {
+    // want fetch my jokes from my SQL TABLE
+    // result is a big JSON object that has a bunch of data on it
+    const result = await db.query(`SELECT * FROM jokes`)
+    // we only care about the 'rows' part of the result
+    const jokes = result.rows
+    res.json(jokes)
+})
 
-//   displayJokes(jokes)
-// }
+app.delete('/jokes/:id', async (req, res) => {
+    console.log(req.params.id)
+    const deleted = await db.query(`DELETE FROM jokes WHERE id = $1`, [req.params.id])
+    res.send(req.params.id)
+})
 
-// function displayJokes(param) {
-//   // clear the div before we add things 
-//   app.innerHTML = ''
-//   param.forEach(singleJoke => {
-//     const h3 = document.createElement('h3')
-//     const pTag = document.createElement('p')
-//     const div = document.createElement('div')
-//     const deleteButton = document.createElement('button')
+app.put('/jokes/:id', async (req, res) => {
+    console.log(req.params.id, req.body)
+    const update = await db.query(`
+        UPDATE jokes 
+        SET 
+        joke = $1, 
+        punchline = $2 
+        WHERE id = $3`, 
+        [req.body.joke, req.body.punchline, req.params.id]
+    )
 
-//     h3.innerText = singleJoke.joke
-//     pTag.innerText = singleJoke.punchline
-//     deleteButton.innerText = 'X'
+    res.json({params:  req.params.id, body: req.body})
+})
+// now a route so I can add a new joke to my database
+// post route
+// i can get the recieved data from the client on the request.body
+// I can use an INSERT statement to insert into my PG database
 
-//     deleteButton.addEventListener('click', function() {
-//       handleDelete(singleJoke.id)
-//     })
+app.post('/jokes', async (req, res) => {
+    // I need to get the information the client sent me 
+    // req object contains information about the request from the client
 
-//     div.appendChild(deleteButton)
-//     div.appendChild(h3)
-//     div.appendChild(pTag)
+    const body = req.body
+    console.log(body)
 
-//     app.appendChild(div)
-//   })
-// }
+    const jokeFromClient = req.body.joke
+    const punchLineFromClient = req.body.punchline
 
-// fetchData()
+    const data = await db.query(`INSERT INTO jokes (joke, punchline) VALUES ('${jokeFromClient}', '${punchLineFromClient}')`)
 
-// async function handleDelete(id) {
-//   const res = await fetch(`http://localhost:5173/jokes/${id}`, {
-//     method: 'DELETE'
-//   })
-//   if (res.ok) {
-//     fetchData()
-//   }
-// }
+    // const dataSafer = await db.query(`INSERT INTO jokes (joke, punchline) VALUES ($1, $2)`, [jokeFromClient, punchLineFromClient])
+
+    res.json(data)
+})
+
+
+app.listen('4242', () => {
+    console.log(`App running on http://localhost:4242`)
+})
