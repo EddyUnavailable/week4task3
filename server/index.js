@@ -21,7 +21,7 @@ const db = new pg.Pool({
     connectionString: process.env.DB_CONN
 })
 
-fetch('https://api.example.com/users') // Replace with your API URL
+fetch('https://uselessfacts.jsph.pl/random.json') // Replace with your API URL
 
     .then(response => {
 
