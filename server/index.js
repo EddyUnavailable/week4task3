@@ -5,51 +5,41 @@ import dotenv from "dotenv"
 const port = process.env.port || 8080;
 
 const express = require('express')
-const app = express()
+
 // allow incomming requests from other people 
 app.use(cors())
 // read incomming json
 app.use(express.json())
 // goes and looks for a .env file and pulls those environment variables into our node process
 dotenv.config()
+let env = process.env.NODE_ENV || "development";
+let config = require("./config")[env];
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const axios = require("axios");
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+const hostname = config.server.host;
 
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.post("/", (req, res) => {
+  console.log(req.body);
+  res.sendStatus(200);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  axios
+    .get("https://uselessfacts.jsph.pl/random.json")
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error.response);
+    });
+});
 
-// a pool is a way for our express app to connect to our database
-// I'll give it a connnection string so that I can connect to *my* database
-const db = new pg.Pool({
-    connectionString: process.env.DB_CONN
-})
-
-// fetch('https://uselessfacts.jsph.pl/random.json') // Replace with your API URL
-
-//     .then(response => {
-
-//         if (!response.ok) {
-
-//             throw new Error('Network response was not ok');
-
-//         }
-
-//         return response.json(); 
-
-//     })
-
-//     .then(data => {
-
-//         console.log(data); // Now you have the fetched user data as a JavaScript object
-
-//     })
-
-//     .catch(error => {
-
-//         console.error('Error fetching data:', error);
-
-//     });
+app.listen(1337, function(){
+  console.log('Express listening on port', this.address().port);
+});
