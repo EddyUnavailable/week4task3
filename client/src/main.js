@@ -134,3 +134,11 @@ const commentsCont = document.querySelector('.comments__container')
 //     // insert feedback into the list
 //     commentsCont.insertAdjacentElement('beforeend', div)
 // }
+
+
+const userId = {
+  user: null,
+}
+
+const userComment = document.querySelector("");S
+const publishBtn = document.querySelector("");
